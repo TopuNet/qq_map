@@ -1,0 +1,39 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1.0,user-scalable=no" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <style>
+    *{
+        padding:0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+        #qq_map {
+            width: 100vw;
+            height: 100vw;
+            float: left;
+            margin:10px 0;
+            position: relative;
+        }
+       
+        #qq_map_1 {
+            width: 100vw;
+            height: 100vw;
+            float: left;
+            margin:10px 0;
+        }
+     
+    </style>
+</head>
+<body>
+    <input id="keyword" type="textbox" value="廊坊">
+    <input type="button" class="button" value="搜索">
+    <div id="qq_map"></div>
+    <div id="qq_map_1"></div>
+</body>
+<script type="text/javascript" src="http://map.qq.com/api/js?v=2.exp&key=d84d6d83e0e51e481e50454ccbe8986b&libraries=geometry"></script>
+<script type="text/javascript" src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
+<script data-main="/jq/qq_map_require.js" src="/inc/require.js"></script>
+</html>

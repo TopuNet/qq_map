@@ -1,0 +1,104 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1.0,user-scalable=no" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <style>
+    *{
+        padding:0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+        #qq_map {
+            width: 100vw;
+            height: 100vw;
+            float: left;
+            margin:10px 0;
+            position: relative;
+        }
+       
+        #qq_map_1 {
+            width: 100vw;
+            height: 100vw;
+            float: left;
+            margin:10px 0;
+        }
+     
+    </style>
+</head>
+<body>
+    <input id="keyword" type="textbox" value="廊坊">
+    <input type="button" class="button" value="搜索">
+    <div id="qq_map"></div>
+    <div id="qq_map_1"></div>
+</body>
+<script type="text/javascript" src="/inc/zepto.min.js"></script>
+<script type="text/javascript" src="http://map.qq.com/api/js?v=2.exp&key=d84d6d83e0e51e481e50454ccbe8986b&libraries=geometry"></script>
+<script type="text/javascript" src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
+<script type="text/javascript" src="/jq/qq_map.js"></script>
+<script>
+    $(function(){
+        var map1 = new qq_map();
+        map1.init();
+
+        var opt = {
+            zoom : 10,      //重设地图级别
+            judge : false,  //添加标记前是否删除原标记，true或false，默认false
+            address : [{'address':'北京南站','info':'北京南站','index':'0'},{'address':'北京火车站','info':'北京火车站','index':'0'}]   
+            //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息，
+        }
+
+        $('input.button').click(function(){
+            var keywords = $('input#keyword').val()
+            var opt = {
+                keywords : keywords,          //搜索关键字
+                page : 1,               //显示返回来的marker页数
+                pageNum : 9             //每页显示marker数量
+            }
+            map1.search(opt)
+        })
+
+        var _opt = {
+            zoom : 11,      //重设地图级别
+            judge : false,  //添加标记前是否删除原标记，true或false，默认false
+            address : [{'address':'北京南站','info':'北京南站','index':4},{'address':'北京站','info':'北京站','index':5}]   
+            //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息（必填），index-设置显示图标数字0-9，0不显示数字，1-9显示对应数字（必填） 
+        }
+        $('#qq_map_1').click(function(){
+            map1.AddMarker(_opt);
+        })
+        
+
+        /*map1.CreatePositionUrl([{
+            address: '廊坊',
+            title:'成都',
+            addr:'北京市海淀区复兴路32号院'
+        },
+        {
+            address:'北京东单',
+            title:'成都园',
+            addr:'北京市丰台区射'
+        },
+        {
+            address:'北京南站',
+            title:'成都园',
+            addr:'北京市丰台区射'
+        },
+        {
+            address:'北京香山',
+            title:'成都园',
+            addr:'北京市丰台区射'
+        }])*/
+
+        //map1.CreateSearchUrl()
+
+
+        /*$('#qq_map_1').click(function(){
+            map1.AddMarker(opt)
+        })*/
+
+    })
+    
+</script>
+</html>
