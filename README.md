@@ -17,7 +17,7 @@
     1. 页面底端引用 http://map.qq.com/api/js?v=2.exp&key=d84d6d83e0e51e481e50454ccbe8986b&libraries=geometry   key是申请的腾讯地图秘钥，不加秘钥的话有些功能会用不了  libraries=geometry开启获取我的位置服务
     2. 后引用  https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js
     3. 后引用  zepto.min.js
-    4. 再引用  /jq/qq_map.js
+    4. 再引用  /jq/qq_map.js
     
 requireJs引用
 
