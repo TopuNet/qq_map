@@ -3,6 +3,8 @@
 
 ### 安装：
 
+    安装： npm install bai-qq_map
+
 ## 文件结构
 
 
