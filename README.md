@@ -1,4 +1,4 @@
-腾讯地图插件v1.1.1
+腾讯地图插件v1.1.2
 ====
 
 ### 安装：
@@ -70,29 +70,6 @@ requireJs引用
        map1.search(opt)
        当关键字搜索不到结果时，控制台输出 检索失败，您输入的地址未找到结果
        
-       
-       //创建位置展示url，此方法需要传一个数组，数组长度不得大于4（即最多显示四个位置），调用方法如下：
-       map1.CreatePositionUrl([{
-            address: '北京天安门',             //设置标记位置，尽可能写的具体些，如果找不到所写的位置，方法不会继续执行（不会跳页）(必填)
-            title:'成都',                     //设置提示框标题，长度不能超过10个汉字(必填)
-            addr:'北京市海淀区复兴路32号院'      //设置提示框内容，长度不能超过10个汉字(必填)
-        },
-        {
-            address:'北京东单',
-            title:'成都园',
-            addr:'北京市丰台区射'
-        },
-        {
-            address:'北京南站',
-            title:'成都园',
-            addr:'北京市丰台区射'
-        },
-        {
-            address:'北京香山',
-            title:'成都园',
-            addr:'北京市丰台区射'
-        }])
-        当未找到填写地址的位置时，控制台会输出： 地址解析失败，请重新输入地址
         
         //创建地图检索url，（设置中心点，和半径，在此范围内查找关键字位置）此方法需要传一个数组，且数组只有一个元素，调用方法如下
         var _opt = [{
@@ -102,10 +79,41 @@ requireJs引用
             }]
        map1.CreateSearchUrl(_opt);
        当未找到填写地址的位置时，控制台输出: 地址解析失败，请重新输入地址
+
+
+       //定位我的位置，需要传一个参数json形式，success-获取我的精准位置成功的回调，error-ip获取我的位置回调，result-返回我的位置信息
+       //result是我的位置返回值，是一个json，其中有lat和lng属性，代表地点经纬度，通过 new qq.maps.LatLng(result.lat, result.lng) 可以创建一个我的位置的点 
+       var _opt = {
+            success : function(result){
+                _this.own = new qq.maps.LatLng(result.lat, result.lng);
+                //创建我的位置marker
+                _this.setMeMarker.apply(_this,[result]);
+            },
+            error : function(result){
+                _this.own = new qq.maps.LatLng(result.lat, result.lng);
+                //创建我的位置marker
+                _this.setMeMarker.apply(_this,[result]);
+            }
+        };
+       map1.PositionMe(_opt);
+
+       //获取两点间距离,需要传一个参数json形式，address_1和address_2是两个点的位置信息，address_1-不传默认为我的位置，address_2-必传参数，success-获取两点距离成功的回调，dis-两点的距离，单位-米
+       map1.GetDistance({
+            address_1 : '北京南站',
+            address_2 : '北京东单',
+            success : function(dis){
+                alert(dis);
+            }
+        })
        
  更新日志
  ====
  
+ v1.1.2
+      1.添加获取两点距离，外部调用方法
+      2.添加获取我的位置，外部调用方法
+      3.删除创建位置展示url方法
+
  v1.1.1
     
       创建地图插件

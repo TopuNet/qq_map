@@ -69,6 +69,22 @@
             map1.AddMarker(_opt);
         })
         
+        map1.GetDistance({
+            address_1 : 1,
+            address_2 : '北京西单',
+            success : function(dis){
+                alert(dis);
+            }
+        })
+
+        map1.GetDistance({
+            address_1 : '北京南站',
+            address_2 : '北京东单',
+            success : function(dis){
+                alert(dis);
+            }
+        })
+        
 
         /*map1.CreatePositionUrl([{
             address: '廊坊',

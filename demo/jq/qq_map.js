@@ -2,6 +2,7 @@
     白梦超
     20170320
     腾讯地图
+    v1.1.2
  */
 
 function qq_map() {
@@ -28,6 +29,34 @@ function qq_map() {
             _this.SetMap.apply(_this);
 
         },
+        //定位我的位置，需要传一个参数json形式，success-获取我的精准位置成功的回调，error-ip获取我的位置回调，result-返回我的位置信息
+        //result是我的位置返回值，是一个json，其中有lat和lng属性，代表地点经纬度，通过 new qq.maps.LatLng(result.lat, result.lng) 可以创建一个我的位置的点 
+        PositionMe : function(opt){
+            var _this = this;
+            var _opt = {
+                success : function(result){
+                    _this.own = new qq.maps.LatLng(result.lat, result.lng);
+                    //创建我的位置marker
+                    _this.setMeMarker.apply(_this,[result]);
+                },
+                error : function(result){
+                    _this.own = new qq.maps.LatLng(result.lat, result.lng);
+                    //创建我的位置marker
+                    _this.setMeMarker.apply(_this,[result]);
+                }
+            };
+
+            _opt = $.extend(_opt,opt);
+            //定位我的位置
+            _this.geolocation = new qq.maps.Geolocation("Y2ABZ-4VZR4-UVCUA-XM5BF-QSWPF-GFFSB", "baimengchao");
+            _this.geolocation.getLocation(function(result) {
+                _opt.success(result);
+            }, function() {
+                _this.geolocation.getIpLocation(function(result) {
+                    _opt.error(result);
+                });
+            });
+        },
         //设置地图属性
         SetMap: function() {
             var _this = this;
@@ -36,6 +65,9 @@ function qq_map() {
                 zoom: 1,
                 draggable: _this.opt.draggable
             });
+
+            //定位我的位置
+            _this.PositionMe();
 
             //创建提示标签
             _this.lable = new qq.maps.Label({
@@ -50,19 +82,6 @@ function qq_map() {
             //添加点击地图隐藏提示框事件
             qq.maps.event.addListener(_this.map, 'click', function() {
                 _this.lable.setVisible(false);
-            });
-
-            //定位我的位置
-            _this.geolocation = new qq.maps.Geolocation("Y2ABZ-4VZR4-UVCUA-XM5BF-QSWPF-GFFSB", "baimengchao");
-            _this.geolocation.getLocation(function(result) {
-                _this.own = new qq.maps.LatLng(result.lat, result.lng);
-                _this.setMeMarker.apply(_this,[result]);
-            }, function() {
-                _this.geolocation.getIpLocation(function(result) {
-                    // console.log("success ip", result);
-                    _this.own = new qq.maps.LatLng(result.lat, result.lng);
-                    _this.setMeMarker.apply(_this,[result]);
-                });
             });
 
             //添加地图标记
@@ -289,7 +308,7 @@ function qq_map() {
             }
             searchKeyword();
         },
-        //创建位置展示url，此方法需要传一个数组，数组长度不得大于4（即最多显示四个位置），参数要求如下
+        /*//创建位置展示url，此方法需要传一个数组，数组长度不得大于4（即最多显示四个位置），参数要求如下
         CreatePositionUrl: function(opt) {
             var _this = this;
             var _opt = [{
@@ -331,7 +350,7 @@ function qq_map() {
                 });
             }
             CreateUrl();
-        },
+        },*/
         //创建地图检索url，此方法需要传一个数组，且数组只有一个元素，参数要求如下
         CreateSearchUrl: function(opt) {
             var _opt = [{
@@ -361,6 +380,88 @@ function qq_map() {
                 });
             }
             CreateUrl();
+        },
+        //获取两点间距离,需要传一个参数json形式，address_1和address_2是两个点的位置信息，address_1-不传默认为我的位置，address_2-必传参数，success-获取两点距离成功的回调，dis-两点的距离，单位-米
+        GetDistance : function(opt){
+            var _this = this;
+
+            var _opt ={
+                address_1 : 1,
+                address_2 : '北京西单',
+                success : function(dis){
+                    console.log(dis);
+                }
+            };
+            var _opt_address = {
+                address_1 : null,
+                address_2 : null
+            };
+            _opt = $.extend(_opt,opt);
+
+            //解析地址
+            var getAddress = function(num){
+                var geocoder = new qq.maps.Geocoder();
+                if (!num){
+                    geocoder.getLocation(_opt.address_1);
+                    //设置服务请求成功的回调函数
+                    geocoder.setComplete(function(result) {
+                        _opt_address.address_1 = result.detail.location;
+                        CalculationDis();
+                    });
+                }else {
+                    geocoder.getLocation(_opt.address_2);
+                    //设置服务请求成功的回调函数
+                    geocoder.setComplete(function(result) {
+                        _opt_address.address_2 = result.detail.location;
+                        CalculationDis();
+                    });
+                }   
+            };
+
+
+            if (_opt.address_1 == 1){
+                if (!_this.own){
+                    _this.PositionMe({
+                        success : function(result){
+                            _this.own = new qq.maps.LatLng(result.lat, result.lng);  
+                        },
+                        error : function(result){
+                            _this.own = new qq.maps.LatLng(result.lat, result.lng); 
+                        }
+                    });
+                    _this.GetDistanceTimer = setInterval(function(){
+                        if (_this.own){
+                            clearInterval(_this.GetDistanceTimer);
+
+                            var geocoder = new qq.maps.Geocoder();
+                            geocoder.getLocation(_opt.address_2);
+                            //设置服务请求成功的回调函数
+                            geocoder.setComplete(function(result) {
+                                _opt_address.address_2 = result.detail.location;
+                                var dis = parseInt(qq.maps.geometry.spherical.computeDistanceBetween(_this.own,_opt_address.address_2));
+                                _opt.success(dis);
+                            });
+                        }
+                    });
+                }else {
+                    var dis = parseInt(qq.maps.geometry.spherical.computeDistanceBetween(_this.own,_opt_address.address_2));
+                    _opt.success(dis);
+                }                
+            }else{
+                for (var i=0; i<2; i++){
+                    getAddress(i);
+                }
+            }
+            
+            //计算距离
+            var CalculationDis =function(){
+                if (_opt_address.address_1 && _opt_address.address_2){
+                    clearInterval(_this.timerSet);
+                    var dis = parseInt(qq.maps.geometry.spherical.computeDistanceBetween(_opt_address.address_1,_opt_address.address_2));
+                    _opt.success(dis);
+                }
+            };
+              
         }
     };
 }
