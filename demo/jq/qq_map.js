@@ -2,7 +2,7 @@
     白梦超
     20170320
     腾讯地图
-    v1.1.2
+    v1.1.3
  */
 
 function qq_map() {
@@ -11,8 +11,8 @@ function qq_map() {
             var _this = this;
             var _opt = {
                 id_map: 'qq_map', //存放qq地图的盒子id，只能用id
-                address: [{ 'address': '北京四惠东站', 'info': '天安门', 'index': 1 }, { 'address': '北京王府井', 'info': '王府井123', 'index': 2 }, { 'address': '北京香山', 'info': '香山', 'index': 3 }],
-                //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息（必填）,index-设置显示图标数字0-9，0不显示数字，1-9显示对应数字（必填） 
+                address: [{'address':'北京四惠东站','info':'天安门','index':1}, {'address':'北京王府井','info':'王府井123','index':2,'fn':function(){alert(2);}},{'address':'北京香山','info':'香山','index':3,'fn':function(){alert(3);}}],
+                //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息（必填）,index-设置显示图标数字0-9，0不显示数字，1-9显示对应数字（必填）,fn-回调函数，点击标记左侧执行，可以不传
                 zoom: 12, //地图等级，默认12，
                 ZoomControl: true, //是否显示地图缩放控件，true或false，默认true
                 panControl: true, //是否显示平移控件，true或false，默认true
@@ -138,12 +138,13 @@ function qq_map() {
             }
         },
         // 监听所有marker的click
-        setMarkerListener: function(marker,info,address,lat,lng) {
+        setMarkerListener: function(marker,info,address,lat,lng,fn) {
             //return function(marker,info,address,lat,lng){
                 var _this = this;
                 qq.maps.event.addListener(marker, 'click', function() {
+                    qq_lable_click = fn;
                     _this.lable.setVisible(true);
-                    _this.lable.setContent('<div class="lable" style="width: 250px; height: 60px;"><div class="left" style="float:left; width:200px; padding: 8px 10px; padding-right: 0;"><div class="title" style="height:26px; line-height: 26px; font-size:16px; color: #0079ff; font-weight: 700; overflow:hidden;">' + info + '</div><div class="content" style="font-size:11px; line-height: 18px; height:18px; overflow:hidden; color:#8a8d8f">' + address + '</div></div><a href="http://apis.map.qq.com/tools/routeplan/eword=' + info + '&epointx=' + lat + '&epointy=' + lng + '?referer=myapp&key=Y2ABZ-4VZR4-UVCUA-XM5BF-QSWPF-GFFSB" target="_self" style="width: 50px; height: 44px; border-left: 1px solid #ccc; margin: 8px 0; float: left;"><span style="width:20px; height:20px; float:left; background:url(/inc/qq_map_bg.png) 0 0 no-repeat; background-size: cover; margin: 4px 15px;"></span><span style="width:50px; height: 18px; font-size: 12px; color: #0079ff; float:left; text-align: center;">路线</span></a><i style="display:block; width:0; height:0; border-top: 10px solid #fff; border-left: 10px solid transparent; border-right: 10px solid transparent; position: absolute; bottom:-9px; left:114px;"></i><div>');
+                    _this.lable.setContent('<div class="lable" style="width: 250px; height: 60px;"><div class="left" onclick="qq_lable_click()" style="float:left; width:200px; padding: 8px 10px; padding-right: 0;"><div class="title" style="height:26px; line-height: 26px; font-size:16px; color: #0079ff; font-weight: 700; overflow:hidden;">' + info + '</div><div class="content" style="font-size:11px; line-height: 18px; height:18px; overflow:hidden; color:#8a8d8f">' + address + '</div></div><a href="http://apis.map.qq.com/tools/routeplan/eword=' + info + '&epointx=' + lat + '&epointy=' + lng + '?referer=myapp&key=Y2ABZ-4VZR4-UVCUA-XM5BF-QSWPF-GFFSB" target="_self" style="width: 50px; height: 44px; border-left: 1px solid #ccc; margin: 8px 0; float: left;"><span style="width:20px; height:20px; float:left; background:url(/inc/qq_map_bg.png) 0 0 no-repeat; background-size: cover; margin: 4px 15px;"></span><span style="width:50px; height: 18px; font-size: 12px; color: #0079ff; float:left; text-align: center;">路线</span></a><i style="display:block; width:0; height:0; border-top: 10px solid #fff; border-left: 10px solid transparent; border-right: 10px solid transparent; position: absolute; bottom:-9px; left:114px;"></i><div>');
                     _this.lable.setPosition(new qq.maps.LatLng(lat, lng));
                 });
             //}
@@ -169,7 +170,7 @@ function qq_map() {
                     _this.MarkerArray.push(marker);
 
                     //标记添加点击事件
-                    _this.setMarkerListener(marker,obj.info,result.detail.address,result.detail.location.lat,result.detail.location.lng);
+                    _this.setMarkerListener(marker,obj.info,result.detail.address,result.detail.location.lat,result.detail.location.lng,obj.fn || function(){});
                 }
             });
             return geocoder.getLocation(obj.address);

@@ -1,4 +1,4 @@
-腾讯地图插件v1.1.2
+腾讯地图插件v1.1.3
 ====
 
 ### 安装：
@@ -38,8 +38,8 @@ requireJs引用
     //初始化地图
     map1.init({
         id_map: 'qq_map', //存放qq地图的盒子id，只能用id
-        address: [{ 'address': '北京四惠东站', 'info': '天安门', 'index': 1 }, { 'address': '北京王府井', 'info': '王府井123', 'index': 2 }, { 'address': '北京香山', 'info': '香山', 'index': 3 }],
-        //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息（必填）,index-设置显示图标数字0-9，0-marker图标不显示数字，1-9marker图标显示对应数字（必填） 
+        address: [{'address':'北京四惠东站','info':'天安门','index':1}, {'address':'北京王府井','info':'王府井123','index':2,'fn':function(){alert(2);}},{'address':'北京香山','info':'香山','index':3,'fn':function(){alert(3);}}],
+        //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息（必填）,index-设置显示图标数字0-9，0不显示数字，1-9显示对应数字（必填）,fn-回调函数，点击标记左侧执行，可以不传
         zoom: 12, //地图等级，默认12，
         ZoomControl: true, //是否显示地图缩放控件，true或false，默认true
         panControl: true, //是否显示平移控件，true或false，默认true
@@ -108,6 +108,9 @@ requireJs引用
        
  更新日志
  ====
+ v1.1.3
+
+      添加标注的回调函数，点击标注左侧时执行
  
  v1.1.2
  

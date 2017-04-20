@@ -4,7 +4,7 @@ require(["qq_map", "/inc/zepto.min.js"], function($qq_map) {
         var map1 = new $qq_map();
         var opt = {
             id_map : 'qq_map',                  //存放qq地图的盒子id，只能用id
-            address : [{'address':'北京天安门','info':'天安门','index':3},{'address':'北京王府井','info':'王府井123','index':2},{'address':'北京香山','info':'香山','index':1}], 
+            address : [{'address':'北京天安门','info':'天安门','index':3,fn:function(){alert('这是天安门');}},{'address':'北京王府井','info':'王府井123','index':2,fn:function(){alert('北京王府井');}},{'address':'北京香山','info':'香山','index':1,fn:function(){alert('北京香山');}}], 
             //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息（必填）,index-设置显示图标数字0-9，0不显示数字，1-9显示对应数字（必填） 
             zoom : 12,                          //地图等级，默认12，
             ZoomControl : true,                 //是否显示地图缩放控件，true或false，默认true
