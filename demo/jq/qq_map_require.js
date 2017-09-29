@@ -17,7 +17,7 @@ require(["qq_map", "/inc/zepto.min.js"], function($qq_map) {
         };
         map1.init(opt);
 
-        $('input.button').click(function(){
+        /*$('input.button').click(function(){
             var keywords = $('input#keyword').val();
             var _opt = {
                 keywords : keywords,          //搜索关键字
@@ -25,6 +25,11 @@ require(["qq_map", "/inc/zepto.min.js"], function($qq_map) {
                 pageNum : 9             //每页显示marker数量
             };
             map1.search(_opt);
-        });
+        });*/
+        
+
+        $('.address').click(function(){
+            map1.CreateRoute('北京市朝阳区百子湾苹果社区')
+        })
     });
 });

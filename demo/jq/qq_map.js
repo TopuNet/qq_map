@@ -2,7 +2,7 @@
     白梦超
     20170320
     腾讯地图
-    v1.1.3
+    v1.1.4
  */
 
 function qq_map() {
@@ -11,7 +11,7 @@ function qq_map() {
             var _this = this;
             var _opt = {
                 id_map: 'qq_map', //存放qq地图的盒子id，只能用id
-                address: [{'address':'北京四惠东站','info':'天安门','index':1}, {'address':'北京王府井','info':'王府井123','index':2,'fn':function(){alert(2);}},{'address':'北京香山','info':'香山','index':3,'fn':function(){alert(3);}}],
+                address: [{'address':'北京四惠东站','info':'天安门','index':0}, {'address':'北京王府井','info':'王府井123','index':0,'fn':function(){alert(2);}},{'address':'北京香山','info':'香山','index':0,'fn':function(){alert(3);}}],
                 //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息（必填）,index-设置显示图标数字0-9，0不显示数字，1-9显示对应数字（必填）,fn-回调函数，点击标记左侧执行，可以不传
                 zoom: 12, //地图等级，默认12，
                 ZoomControl: true, //是否显示地图缩放控件，true或false，默认true
@@ -175,6 +175,35 @@ function qq_map() {
             });
             return geocoder.getLocation(obj.address);
         },
+
+        //创建调用路线规划的方法，address目的地地址信息（尽可能详细）
+        CreateRoute : function(address){
+            window.location = 'http://apis.map.qq.com/tools/routeplan/eword=' + address + '?referer=myapp&key=Y2ABZ-4VZR4-UVCUA-XM5BF-QSWPF-GFFSB';
+            /*var geocoder = new qq.maps.Geocoder({
+                complete: function(result) {
+                    // if (judge) {
+                    //     _this.map.setCenter(result.detail.location);
+                    // }
+                    // //设置标记动画
+                    // var marker = null;
+                    // marker = new qq.maps.Marker({
+                    //     map: _this.map,
+                    //     position: result.detail.location,
+                    //     icon: new qq.maps.MarkerImage(
+                    //         "/inc/qq_map_" + obj.index + ".png"),
+                    //     animation: qq.maps.MarkerAnimation.DOWN
+                    // });
+                    
+                    // _this.MarkerArray.push(marker);
+
+                    //标记添加点击事件
+                    window.location = 'http://apis.map.qq.com/tools/routeplan/eword=' + result.detail.address + '&epointx=' + result.detail.location.lat + '&epointy=' + result.detail.location.lng + '?referer=myapp&key=Y2ABZ-4VZR4-UVCUA-XM5BF-QSWPF-GFFSB'
+                    //_this.setMarkerListener(marker,obj.info,result.detail.address,result.detail.location.lat,result.detail.location.lng,obj.fn || function(){});
+                }
+            });
+            geocoder.getLocation(_opt.address)*/
+        },
+
         //存放标记
         MarkerArray: [],
         //地图中添加标记
@@ -217,6 +246,7 @@ function qq_map() {
         },
         //检索功能
         search: function(opt) {
+            var _this = this;
             var _opt = {
                 keywords: '廊坊', //搜索关键字
                 page: 1, //显示返回来的marker页数
@@ -225,7 +255,7 @@ function qq_map() {
             _opt = $.extend(_opt, opt);
 
             $('#qq_map_1').html('');
-            var _this = this;
+            
             //隐藏提示框
             _this.lable.setVisible(false);
             var latlngBounds = new qq.maps.LatLngBounds();
