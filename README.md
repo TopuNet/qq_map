@@ -21,7 +21,7 @@ requireJs引用
 
     1. 页面底端引用require.js前，引用 http://map.qq.com/api/js?v=2.exp&key=d84d6d83e0e51e481e50454ccbe8986b&libraries=geometry   key是申请的腾讯地图秘钥，不加秘钥的话有些功能会用不了  libraries=geometry开启获取我的位置服务
     2. 后引用 https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js
-    3. 依赖qq_map.js和 zepto.min.js，baidu_map.js 成功后返回对象qq_map
+    3. 依赖qq_map.js， zepto.min.js和baidu_map.js 成功后返回对象qq_map
     
 ## 功能配置及启用方法
 
