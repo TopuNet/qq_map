@@ -8,7 +8,7 @@
 ## 文件结构
 
 
-    1.widget/lib/qq_map.js 放入项目文件夹widget/lib中
+    1.widget/lib文件夹中的 qq_map.js，baidu_map.js 放入项目文件夹widget/lib中,
     2.inc文件夹中的图片和weui.min.css放入项目文件inc中
     3.f文件夹中的safari.html放入项目f文件夹中
     4.widget/app中safari.js放入项目widget/app文件夹中，并且在widget/app.js 中添加引用
@@ -34,7 +34,7 @@ requireJs引用
     //初始化地图
     map1.init({
         id_map: 'qq_map', //存放qq地图的盒子id，只能用id
-        address: [{'address':'北京四惠东站','info':'天安门','index':1}, {'address':'北京王府井','info':'王府井123','index':2,'fn':function(){alert(2);}},{'address':'北京香山','info':'香山','index':3,'fn':function(){alert(3);}}],
+        address: [{'address':'北京四惠东站','info':'天安门','index':0}, {'address':'北京王府井','info':'王府井123','index':0,'fn':function(){alert(2);}},{'address':'北京香山','info':'香山','index':0,'fn':function(){alert(3);}}],
         //此处为一个数组，address-添加到地图中的标记名称，info-点击标记时的提示信息（必填）,index-设置显示图标数字0-9，0不显示数字，1-9显示对应数字（必填）,fn-回调函数，点击标记左侧执行，可以不传
         zoom: 12, //地图等级，默认12，
         ZoomControl: true, //是否显示地图缩放控件，true或false，默认true
@@ -43,7 +43,13 @@ requireJs引用
         mapTypeControlOptions: true, //是否显示地图类型控件，true或false，默认true
         draggable: true, //设置是否可以拖拽，true或false，默认true
         CenterMe: false, //设置地图是否已我的位置为中心，true-以我的位置为中心，false-不以我的位置为中心,当设置为false时，以地图中传的第一个点为中心，默认-false
-        ShowMeMarker: true //设置地图是否显示我的位置的marker，true-显示，false-不显示,默认-true
+        ShowMeMarker: true, //设置地图是否显示我的位置的marker，true-显示，false-不显示,默认-true
+        ShowLable: false,  //设置是否显示提示框，true-显示，false-不显示,默认-false
+        ChooseMaptypeZindex: 6001,  //设置选择地图类型的z_index，默认6001
+        ChooseLater_callback: function(){        //选择地图类型后的回调，默认微信弹层收起
+            $('#qq_map_iosActionsheet').removeClass('weui-actionsheet_toggle');
+            $('#qq_map_iosMask').fadeOut(200);
+        }
      });
      
      
@@ -107,6 +113,18 @@ requireJs引用
        
  更新日志
  ====
+ v2.0.0
+
+      1.修改demo模型，改成require模式
+      2.添加参数 1. ShowLable: false,  //设置是否显示提示框，true-显示，false-不显示,默认-false
+                 2. ChooseMaptypeZindex: 6001,  //设置选择地图类型的z_index，默认6001
+                 3. ChooseLater_callback: function(){        //选择地图类型后的回调，默认微信弹层收起
+                      $('#qq_map_iosActionsheet').removeClass('weui-actionsheet_toggle');
+                      $('#qq_map_iosMask').fadeOut(200);
+                    }
+      3.导航修改成微信样式底部弹出的方式，
+      4.添加百度导航和谷歌导航
+
  v1.1.4
 
       添加外部调用规划路线方法
