@@ -1,4 +1,4 @@
-腾讯地图插件v1.1.4
+腾讯地图插件v2.0.0
 ====
 
 ### 安装：
@@ -8,24 +8,20 @@
 ## 文件结构
 
 
-    1.jq/qq_map.js 放入项目文件夹jq（原生规范）或widget/lib（AMD规范）中
-    2.demo中的demo.html为功能展现最全面的页面；demo_requireJs.html是amd规范的测试
-    
+    1.widget/lib/qq_map.js 放入项目文件夹widget/lib中
+    2.inc文件夹中的图片和weui.min.css放入项目文件inc中
+    3.f文件夹中的safari.html放入项目f文件夹中
+    4.widget/app中safari.js放入项目widget/app文件夹中，并且在widget/app.js 中添加引用
+
 ## 页面引用
 
 
-原生引用
 
-    1. 页面底端引用 http://map.qq.com/api/js?v=2.exp&key=d84d6d83e0e51e481e50454ccbe8986b&libraries=geometry   key是申请的腾讯地图秘钥，不加秘钥的话有些功能会用不了  libraries=geometry开启获取我的位置服务
-    2. 后引用  https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js
-    3. 后引用  zepto.min.js
-    4. 再引用  /jq/qq_map.js
-    
 requireJs引用
 
     1. 页面底端引用require.js前，引用 http://map.qq.com/api/js?v=2.exp&key=d84d6d83e0e51e481e50454ccbe8986b&libraries=geometry   key是申请的腾讯地图秘钥，不加秘钥的话有些功能会用不了  libraries=geometry开启获取我的位置服务
     2. 后引用 https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js
-    3. 依赖qq_map.js和 zepto.min.js，成功后返回对象baidu_map
+    3. 依赖qq_map.js和 zepto.min.js，baidu_map.js 成功后返回对象qq_map
     
 ## 功能配置及启用方法
 
